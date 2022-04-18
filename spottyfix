@@ -1,0 +1,20 @@
+#! /bin/bash
+
+echo "Executing the Spotify Audio Fix..."
+
+# Kill the spotify application
+sudo pkill -9 spotify
+
+# Kill the pulseaudio service
+pulseaudio -k
+
+# Start the pulseaudio service
+pulseaudio --start
+
+# Start the spotify service and grant access back to the terminal
+spotify &
+
+sleep 5
+
+# Play whichever song was last on in spotify
+dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Play
